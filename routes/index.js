@@ -1,5 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const http = require('http');
+const querystring = require('querystring');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -16,7 +18,8 @@ router.post('/order/invoice', function (req, res, next) {
     mobile_no: req.body.mobile_no,
     barcode: req.body.barcode,
     order_line_id: req.body.order_line_id,
-    order_id: req.body.order_id
+    order_id: req.body.order_id,
+    warehouse_id: req.body.warehouse_id
   };
 
   const values = {
@@ -25,14 +28,34 @@ router.post('/order/invoice', function (req, res, next) {
     used_balance: req.body.used_balance
   };
 
-  for(let key in values){
-    if(values.hasOwnProperty(key)){
+  for (let key in values) {
+    if (values.hasOwnProperty(key)) {
       values[key] += (multiplier * Math.floor(Math.random() * values[key]))
     }
   }
 
-  res.json(Object.assign(values, data));
+  setTimeout(() => {
+    post(Object.assign(values, data))
+  }, 5000);
+
+  res.json({});
+
 });
 
+
+
+function post(result) {
+  const request = require('request');
+
+  request.post(
+    'http://localhost:3000/api/order/invoice/verify',
+    {json: result},
+    function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log(body)
+      }
+    }
+  );
+}
 
 module.exports = router;
