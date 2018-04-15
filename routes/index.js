@@ -14,7 +14,9 @@ router.post('/order/invoice', function (req, res, next) {
 
   const data = {
     mobile_no: req.body.mobile_no,
-    barcode: req.body.barcode
+    barcode: req.body.barcode,
+    order_line_id: req.body.order_line_id,
+    order_id: req.body.order_id
   };
 
   const values = {
