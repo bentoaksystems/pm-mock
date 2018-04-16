@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const http = require('http');
-const querystring = require('querystring');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -15,17 +13,17 @@ router.post('/order/invoice', function (req, res, next) {
     multiplier = 1;
 
   const data = {
-    mobile_no: req.body.mobile_no,
+    mobileNo: req.body.mobileNo,
     barcode: req.body.barcode,
-    order_line_id: req.body.order_line_id,
-    order_id: req.body.order_id,
-    warehouse_id: req.body.warehouse_id
+    orderLineId: req.body.orderLineId,
+    orderId: req.body.orderId,
+    warehouseId: req.body.warehouseId
   };
 
   const values = {
-    total_price: req.body.total_price,
-    used_point: req.body.used_point,
-    used_balance: req.body.used_balance
+    paidPrice: req.body.paidPrice,
+    usedPoint: req.body.usedPoint,
+    usedBalance: req.body.usedBalance
   };
 
   for (let key in values) {
@@ -48,7 +46,7 @@ function post(result) {
   const request = require('request');
 
   request.post(
-    'http://localhost:3000/api/order/invoice/verify',
+    'http://localhost:3000/api/order/ticket/verifyInvoice',
     {json: result},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
