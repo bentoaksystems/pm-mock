@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const env = require('../env');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -68,7 +69,7 @@ function post(api,result) {
   const request = require('request');
 
   request.post(
-    `http://localhost:3000/api/order/offline/${api}`,
+    `http://${env.callBackURL}/api/order/offline/${api}`,
     {json: result},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
