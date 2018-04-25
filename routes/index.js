@@ -12,18 +12,19 @@ router.post('/order/invoice', function (req, res, next) {
   if (req.body.return)
     multiplier = 1;
 
+  console.log('-> ',req.body);
   const data = {
     mobileNo: req.body.mobileNo,
     barcode: req.body.barcode,
     orderLineId: req.body.orderLineId,
     orderId: req.body.orderId,
-    warehouseId: req.body.warehouseId
+    warehouseId: req.body.warehouseId,
+    userId: req.body.userId
   };
 
   const values = {
-    paidPrice: req.body.paidPrice,
-    usedPoint: req.body.usedPoint,
-    usedBalance: req.body.usedBalance
+    point: req.body.usedPoint,
+    balance: req.body.usedBalance
   };
 
   for (let key in values) {
@@ -33,8 +34,28 @@ router.post('/order/invoice', function (req, res, next) {
   }
 
   setTimeout(() => {
-    post(Object.assign(values, data))
+    post('verifyInvoice',Object.assign(values, data))
   }, 5000);
+
+  res.json({});
+
+});
+
+router.post('/order/inventory', function (req, res, next) {
+
+  console.log('-> ',req.body);
+  const data = {
+    orderId: req.body.orderId,
+    orderLineId: req.body.orderLineId,
+    warehouseId: req.body.warehouseId,
+    userId: req.body.userId,
+    barcode: req.body.barcode
+  };
+
+
+  setTimeout(() => {
+    post('verifyOnlineWarehouse',data)
+  }, 15000);
 
   res.json({});
 
@@ -42,11 +63,12 @@ router.post('/order/invoice', function (req, res, next) {
 
 
 
-function post(result) {
+
+function post(api,result) {
   const request = require('request');
 
   request.post(
-    'http://localhost:3000/api/order/ticket/verifyInvoice',
+    `http://localhost:3000/api/order/offline/${api}`,
     {json: result},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
