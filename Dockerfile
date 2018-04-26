@@ -1,7 +1,13 @@
+
+# docker file for mock
+
 FROM node:carbon
 
 # Create app directory
-WORKDIR /src/app
+WORKDIR usr/src/app
+
+ENV CALL_BACK_URL localhost
+
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -16,4 +22,5 @@ RUN npm install --only=production
 COPY . .
 
 EXPOSE 81
+
 CMD [ "npm", "start" ]
