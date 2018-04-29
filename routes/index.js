@@ -13,7 +13,7 @@ router.post('/order/invoice', function (req, res, next) {
   if (req.body.return)
     multiplier = 1;
 
-  console.log('-> ',req.body);
+  console.log('-> invoice: ',req.body);
   const data = {
     mobileNo: req.body.mobileNo,
     barcode: req.body.barcode,
@@ -30,13 +30,13 @@ router.post('/order/invoice', function (req, res, next) {
 
   for (let key in values) {
     if (values.hasOwnProperty(key)) {
-      values[key] += (multiplier * Math.floor(Math.random() * values[key]))
+      values[key] += (multiplier * Math.floor(Math.random() * (values[key] ? values[key] : 1000) ))
     }
   }
 
   setTimeout(() => {
     post('verifyInvoice',Object.assign(values, data))
-  }, 5000);
+  }, 2000);
 
   res.json({});
 
@@ -44,7 +44,7 @@ router.post('/order/invoice', function (req, res, next) {
 
 router.post('/order/inventory', function (req, res, next) {
 
-  console.log('-> ',req.body);
+  console.log('-> inventory: ',req.body);
   const data = {
     orderId: req.body.orderId,
     orderLineId: req.body.orderLineId,
@@ -56,7 +56,7 @@ router.post('/order/inventory', function (req, res, next) {
 
   setTimeout(() => {
     post('verifyOnlineWarehouse',data)
-  }, 15000);
+  }, 2000);
 
   res.json({});
 
