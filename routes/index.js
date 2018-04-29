@@ -36,7 +36,7 @@ router.post('/order/invoice', function (req, res, next) {
 
   setTimeout(() => {
     post('verifyInvoice',Object.assign(values, data))
-  }, 2000);
+  }, 5000);
 
   res.json({});
 
@@ -56,7 +56,7 @@ router.post('/order/inventory', function (req, res, next) {
 
   setTimeout(() => {
     post('verifyOnlineWarehouse',data)
-  }, 2000);
+  }, 5000);
 
   res.json({});
 
