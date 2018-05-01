@@ -69,7 +69,7 @@ function post(api,result) {
   const request = require('request');
 
   request.post(
-    `http://${env.callBackURL}/api/order/offline/${api}`,
+    `${env.callBackURL}/api/order/offline/${api}`,
     {json: result},
     function (error, response, body) {
       if (!error && response.statusCode == 200) {
