@@ -17,11 +17,10 @@ router.post('/order/invoice', function (req, res, next) {
   console.log('-> invoice: ', req.body);
   const data = {
     mobileNo: req.body.mobileNo,
-    barcode: req.body.barcode,
-    orderLineId: req.body.orderLineId,
     orderId: req.body.orderId,
     warehouseId: req.body.warehouseId,
-    userId: req.body.userId
+    userId: req.body.userId,
+    invoiceNo: `no-${Math.floor(Math.random() * 1000)}`
   };
 
   const values = {
