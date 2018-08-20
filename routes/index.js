@@ -8,6 +8,10 @@ router.get('/', function (req, res, next) {
   res.render('index', {title: 'Express'});
 });
 
+router.post('/test', function (req, res, next) {
+  res.json('test');
+});
+
 router.post('/order/invoice', function (req, res, next) {
 
   let multiplier = -1;
