@@ -2,6 +2,39 @@
 const express = require('express');
 const router = express.Router();
 const env = require('../env');
+const rp = (require("request-promise")).defaults({jar: true});
+
+
+let jar;
+main = async () => {
+  try {
+    let body = {
+      username: 'offline@persianmode.com',
+      password: 'admin@123',
+      loginType: 6
+    };
+    const rpJar = rp.jar();
+    let res = await rp({
+      method: 'POST',
+      uri: `${env.callBackURL}/api/agent/login`,
+      body,
+      json: true,
+      withCredentials: true,
+      jar: rpJar,
+    });
+
+    jar = rpJar;
+
+    console.log('-> ', 'offline system has logged in successfully' );
+  } catch (err) {
+    console.log('-> ');
+    throw err;
+  }
+
+}
+
+main();
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -14,34 +47,18 @@ router.post('/test', function (req, res, next) {
 
 router.post('/order/invoice', function (req, res, next) {
 
-  let multiplier = -1;
-  if (req.body.return)
-    multiplier = 1;
-
   console.log('-> invoice: ', req.body);
+
   const data = {
-    mobileNo: req.body.mobileNo,
     orderId: req.body.orderId,
-    warehouseId: req.body.warehouseId,
     userId: req.body.userId,
-    invoiceNo: `no-${Math.floor(Math.random() * 1000)}`
+    category: req.body.mobileNo,
+    invoiceNo: `no-${Math.floor(Math.random() * 1000)}`,
+    loyaltyPoints: Math.floor(Math.random() * 100)
   };
-
-  const values = {
-    point: req.body.usedPoint,
-    balance: req.body.usedBalance
-  };
-
-  for (let key in values) {
-    if (values.hasOwnProperty(key)) {
-      values[key] += (multiplier * Math.floor(Math.random() * (values[key] ? values[key] : 1000)))
-      if (values[key] < 0)
-        values[key] = values[key] * -1;
-    }
-  }
 
   setTimeout(() => {
-    post('verifyInvoice', Object.assign(values, data))
+    post('verifyInvoice', data)
   }, 5000);
 
   res.json({});
@@ -69,18 +86,24 @@ router.post('/order/inventory', function (req, res, next) {
 });
 
 
-function post(api, result) {
-  const request = require('request');
+async function post(api, body) {
 
-  request.post(
-    `${env.callBackURL}/api/order/offline/${api}`,
-    {json: result},
-    function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log(body)
-      }
-    }
-  );
+  try {
+
+    let res = await rp({
+      method: 'POST',
+      uri: `${env.callBackURL}/api/order/offline/${api}`,
+      body,
+      json: true,
+      withCredentials: true,
+      jar,
+    });
+
+    console.log(res)
+  } catch (err) {
+    console.log('-> ', err);
+  }
+
 }
 
 module.exports = router;
