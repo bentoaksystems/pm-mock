@@ -25,10 +25,13 @@ main = async () => {
 
     jar = rpJar;
 
-    console.log('-> ', 'offline system has logged in successfully' );
+    console.log('-> ', 'offline system has logged in successfully');
   } catch (err) {
-    console.log('-> ');
-    throw err;
+    console.log('-> ', err);
+    if (!jar)
+      setTimeout(() => {
+        main();
+      }, 5000); 
   }
 
 }
@@ -54,7 +57,8 @@ router.post('/order/invoice', function (req, res, next) {
     userId: req.body.userId,
     category: req.body.mobileNo,
     invoiceNo: `no-${Math.floor(Math.random() * 1000)}`,
-    loyaltyPoints: Math.floor(Math.random() * 100)
+    loyaltyPoints: Math.floor(Math.random() * 100),
+    warehouseId: req.body.warehouseId
   };
 
   setTimeout(() => {
