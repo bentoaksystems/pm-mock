@@ -77,12 +77,13 @@ router.post('/order/inventory', function (req, res, next) {
     orderLineId: req.body.orderLineId,
     warehouseId: req.body.warehouseId,
     userId: req.body.userId,
-    barcode: req.body.barcode
+    barcode: req.body.barcode,
+    reverse: req.body.reverse
   };
 
 
   setTimeout(() => {
-    post('verifyOnlineWarehouse', data)
+    post('onlineWarehouseResponse', data)
   }, 5000);
 
   res.json({});
