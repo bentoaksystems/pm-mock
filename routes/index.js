@@ -78,7 +78,7 @@ router.post('/transfer', function (req, res, next) {
     warehouseId: req.body.warehouseId,
     userId: req.body.userId,
     barcode: req.body.barcode,
-    transferId: req.body.transferId
+    type: req.body.type
   };
 
 
