@@ -62,14 +62,14 @@ router.post('/order/invoice', function (req, res, next) {
   };
 
   setTimeout(() => {
-    post('verifyInvoice', data)
+    post('invoiceResponse', data)
   }, 5000);
 
   res.json({});
 
 });
 
-router.post('/order/inventory', function (req, res, next) {
+router.post('/transfer', function (req, res, next) {
 
   console.log('-> inventory: ', req.body);
   const data = {
@@ -78,12 +78,12 @@ router.post('/order/inventory', function (req, res, next) {
     warehouseId: req.body.warehouseId,
     userId: req.body.userId,
     barcode: req.body.barcode,
-    reverse: req.body.reverse
+    transferId: req.body.transferId
   };
 
 
   setTimeout(() => {
-    post('onlineWarehouseResponse', data)
+    post('transferResponse', data)
   }, 5000);
 
   res.json({});
@@ -110,5 +110,7 @@ async function post(api, body) {
   }
 
 }
+
+
 
 module.exports = router;
