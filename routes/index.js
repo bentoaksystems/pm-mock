@@ -48,7 +48,7 @@ router.post('/test', function (req, res, next) {
   res.json('test');
 });
 
-router.post('/order/invoice', function (req, res, next) {
+router.post('/invoice', function (req, res, next) {
 
   console.log('-> invoice: ', req.body);
 
@@ -71,7 +71,7 @@ router.post('/order/invoice', function (req, res, next) {
 
 router.post('/transfer', function (req, res, next) {
 
-  console.log('-> inventory: ', req.body);
+  console.log('-> transfer: ', req.body);
   const data = {
     orderId: req.body.orderId,
     orderLineId: req.body.orderLineId,
@@ -84,6 +84,27 @@ router.post('/transfer', function (req, res, next) {
 
   setTimeout(() => {
     post('transferResponse', data)
+  }, 5000);
+
+  res.json({});
+
+});
+
+router.post('/receive', function (req, res, next) {
+
+  console.log('-> receive: ', req.body);
+  const data = {
+    orderId: req.body.orderId,
+    orderLineId: req.body.orderLineId,
+    warehouseId: req.body.warehouseId,
+    userId: req.body.userId,
+    barcode: req.body.barcode,
+    type: req.body.type
+  };
+
+
+  setTimeout(() => {
+    post('receiveResponse', data)
   }, 5000);
 
   res.json({});
