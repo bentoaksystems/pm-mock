@@ -116,6 +116,8 @@ async function post(api, body) {
 
   try {
 
+    console.log('-> ', jar);
+
     let res = await rp({
       method: 'POST',
       uri: `${env.callBackURL}/api/order/offline/${api}`,
